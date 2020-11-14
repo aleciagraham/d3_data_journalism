@@ -1,5 +1,5 @@
-var svgWidth = 960;
-var svgHeight = 500;
+var svgWidth = 950;
+var svgHeight = 300;
 
 var margin = {
   top: 20,
@@ -34,7 +34,7 @@ d3.csv("/assets/data/data.csv").then(function(hairData) {
     // Step 2: Create scale functions
     // ==============================
     var xLinearScale = d3.scaleLinear()
-      .domain([d3.min(hairData, d => d.income)-2000, d3.max(hairData, d => d.income)])
+      .domain([d3.min(hairData, d => d.income)-3000, d3.max(hairData, d => d.income)])
       .range([0, width]);
 
     var yLinearScale = d3.scaleLinear()
@@ -57,6 +57,11 @@ d3.csv("/assets/data/data.csv").then(function(hairData) {
 
     // Step 5: Create Circles
     // ==============================
+
+
+    // var svg = d3.select(".stateText")
+   
+    
     var circlesGroup = chartGroup.selectAll("circle")
     .data(hairData)
     .enter()
@@ -64,8 +69,22 @@ d3.csv("/assets/data/data.csv").then(function(hairData) {
     .attr("cx", d => xLinearScale(d.income))
     .attr("cy", d => yLinearScale(d.obesity))
     .attr("r", "15")
-    .attr("fill", "pink")
+    .attr("fill", "lightblue")
     .attr("opacity", ".5");
+
+
+    var labelGroup = chartGroup.selectAll('text')
+    .data(hairData)
+    .enter()
+    .append('text')
+    .text(d=>d.abbr)
+    .attr("x", d => xLinearScale(d.income)-10)
+    .attr("y", d => yLinearScale(d.obesity)+8)
+    .attr(fill, 'white')
+
+    
+  
+
 
     // Step 6: Initialize tool tip
     // ==============================
@@ -73,7 +92,7 @@ d3.csv("/assets/data/data.csv").then(function(hairData) {
       .attr("class", "d3-tip")
       .offset([80, -60])
       .html(function(d) {
-        return (`${d.abbr}<br>Income: ${d.income}<br>Obesity: ${d.obesity}`);
+        return (`${d.state}<br>Income: ${d.income}<br>Obesity: ${d.obesity}`);
       });
 
     // Step 7: Create tooltip in the chart
@@ -93,7 +112,7 @@ d3.csv("/assets/data/data.csv").then(function(hairData) {
     // Create axes labels
     chartGroup.append("text")
       .attr("transform", "rotate(-90)")
-      .attr("y", 0 - margin.left + 40)
+      .attr("y", 0 - margin.left + 5)
       .attr("x", 0 - (height / 2))
       .attr("dy", "1em")
       .attr("class", "axisText")
