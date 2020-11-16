@@ -34,7 +34,7 @@ d3.csv("/assets/data/data.csv").then(function(hairData) {
     // Step 2: Create scale functions
     // ==============================
     var xLinearScale = d3.scaleLinear()
-      .domain([d3.min(hairData, d => d.income)-3000, d3.max(hairData, d => d.income)])
+      .domain([d3.min(hairData, d => d.income-1000), d3.max(hairData, d => d.income)])
       .range([0, width]);
 
     var yLinearScale = d3.scaleLinear()
@@ -73,14 +73,18 @@ d3.csv("/assets/data/data.csv").then(function(hairData) {
     .attr("opacity", ".5");
 
 
-    var labelGroup = chartGroup.selectAll('text')
+    var textGroup = chartGroup.selectAll("text")
     .data(hairData)
     .enter()
-    .append('text')
-    .text(d=>d.abbr)
-    .attr("x", d => xLinearScale(d.income)-10)
-    .attr("y", d => yLinearScale(d.obesity)+8)
-    .attr(fill, 'white')
+    .append("text")
+    .text(d => d.abbr)
+    .attr("dx", d => xLinearScale(d.income))
+    .attr("dy", d => yLinearScale(d.obesity))
+    .style("fill","black")
+    .attr("class","stateText")
+    .attr("font-size", "10")
+    .attr("text-anchor", "middle");
+ 
 
     
   
